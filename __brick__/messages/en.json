@@ -1,0 +1,9 @@
+{
+  "HomePage": {
+    "title": "nextjs-brick"
+  },
+  "LocaleSwitcher": {
+    "label": "Change language",
+    "locale": "{locale, select, it {Italiano} en {English} other {Unknown}}"
+  }
+}
