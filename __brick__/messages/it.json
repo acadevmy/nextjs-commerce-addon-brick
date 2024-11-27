@@ -1,6 +1,6 @@
 {
   "LocaleSwitcher": {
-    "label": "Change language",
+    "label": "Cambia lingua",
     "locale": "{locale, select, it {Italiano} en {English} other {Unknown}}"
   }
 }

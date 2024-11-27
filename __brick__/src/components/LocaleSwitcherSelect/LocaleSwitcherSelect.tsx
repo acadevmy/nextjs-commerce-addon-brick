@@ -30,15 +30,14 @@ const LocaleSwitcherSelect = ({ children, defaultValue, label }: Props) => {
 
   return (
     <label className="relative text-gray-400">
-      <p className="sr-only">{label}</p>
+      <p>{label}</p>
       <select
-        className="inline-flex appearance-none bg-transparent py-3 pl-2 pr-6"
+        className="inline-flex bg-transparent border p-2 mt-2"
         defaultValue={defaultValue}
         onChange={onSelectChange}
       >
         {children}
       </select>
-      <span className="pointer-events-none absolute right-2 top-[8px]">⌄</span>
     </label>
   );
 };
