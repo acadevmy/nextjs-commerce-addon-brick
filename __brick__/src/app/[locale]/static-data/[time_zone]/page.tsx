@@ -7,6 +7,7 @@ import {
   DynamicTimeZonePageProps,
 } from "@/appTypes/PageProps";
 import { fetchAvailableTimezones, fetchTimeApiDataByTimeZone } from "@/data";
+import { routing } from "@/i18n/routing";
 import { generateCanonicalUrl, getSeoMetadata } from "@/utils/seoMetadata";
 
 export const generateMetadata = async ({
