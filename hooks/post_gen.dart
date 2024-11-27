@@ -8,10 +8,10 @@ void run(HookContext context) async {
 Future<void> runPnpm({
   required HookContext context,
 }) async {
-  context.logger.info('📦 Installing shadcn/ui dependencies');
+  context.logger.info('📦 Installing commerce dependencies');
   await Process.run('pnpm', [
     'i',
     'next-intl'
   ]);
-  context.logger.success('📦 shadcn/ui configured successfully 🚀');
+  context.logger.success('📦 commerce configured successfully 🚀');
 }
