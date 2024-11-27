@@ -10,13 +10,19 @@ Future<void> moveAppToAppLocale({
 }) async {
   context.logger.info(
       '📦 Preparing to move src/app to src/app/[locale] (only page.tsx and route.ts files related to Next.js app router will be moved)...');
+
   final appPath = 'src/app';
-
-// 1. Create new folder src/app/[locale]
   final localePath = '$appPath/[locale]';
-  Directory(localePath).createSync(recursive: true);
 
-// 2. Move existing folders containing page.tsx or route.ts from src/app to src/app/[locale]
+  // 1. Create new folder src/app/[locale]
+  final localeDir = Directory(localePath);
+  if (!localeDir.existsSync()) {
+    localeDir.createSync(recursive: true);
+    context.logger
+              .warn('⚠️ Directory already exists: $localeDir. Skipping...');
+  }
+
+  // 2. Move existing folders containing page.tsx or route.ts from src/app to src/app/[locale]
   final sourceDir = Directory(appPath);
   if (sourceDir.existsSync()) {
     sourceDir.listSync().whereType<Directory>().forEach((dir) {
@@ -28,16 +34,31 @@ Future<void> moveAppToAppLocale({
       if (containsRelevantFile) {
         // Move folder
         final newPath = dir.path.replaceFirst(appPath, localePath);
-        Directory(newPath).createSync(recursive: true);
-        dir.renameSync(newPath);
+        final newDir = Directory(newPath);
+
+        if (newDir.existsSync()) {
+          context.logger
+              .warn('⚠️ Directory already exists: $newPath. Skipping...');
+        } else {
+          Directory(newPath).createSync(recursive: true);
+          dir.renameSync(newPath);
+        }
       }
     });
   }
 
+  // 3. Move the top-level page.tsx to src/app/[locale] if it exists
   final topLevelPageFile = File('$appPath/page.tsx');
   if (topLevelPageFile.existsSync()) {
     final newPath = '$localePath/page.tsx';
-    topLevelPageFile.renameSync(newPath);
+    final newFile = File(newPath);
+
+    if (newFile.existsSync()) {
+      context.logger.warn('⚠️ File already exists: $newPath. Skipping...');
+    } else {
+      topLevelPageFile.renameSync(newPath);
+      context.logger.info('Moved top-level page.tsx to $newPath');
+    }
   }
 
   context.logger
