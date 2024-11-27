@@ -8,14 +8,15 @@ void run(HookContext context) async {
 Future<void> moveAppToAppLocale({
   required HookContext context,
 }) async {
-  context.logger.info('📦 Move src/app to src/app/[locale] folder');
+  context.logger.info(
+      '📦 Preparing to move src/app to src/app/[locale] (only page.tsx and route.ts files related to Next.js app router will be moved)...');
   final appPath = 'src/app';
 
-  // 1. create new folder src/app/[locale]
+// 1. Create new folder src/app/[locale]
   final localePath = '$appPath/[locale]';
   Directory(localePath).createSync(recursive: true);
 
-  // 2. move existing files from src/app to src/app/[locale]
+// 2. Move existing folders containing page.tsx or route.ts from src/app to src/app/[locale]
   final sourceDir = Directory(appPath);
   if (sourceDir.existsSync()) {
     sourceDir.listSync().whereType<Directory>().forEach((dir) {
@@ -25,12 +26,20 @@ Future<void> moveAppToAppLocale({
       });
 
       if (containsRelevantFile) {
-        // move folder
+        // Move folder
         final newPath = dir.path.replaceFirst(appPath, localePath);
         Directory(newPath).createSync(recursive: true);
         dir.renameSync(newPath);
       }
     });
   }
-  context.logger.success('📦 src/app moved to src/app/[locale] 🚀');
+
+  final topLevelPageFile = File('$appPath/page.tsx');
+  if (topLevelPageFile.existsSync()) {
+    final newPath = '$localePath/page.tsx';
+    topLevelPageFile.renameSync(newPath);
+  }
+
+  context.logger
+      .success('✅ Successfully moved src/app to src/app/[locale]! 🚀');
 }
