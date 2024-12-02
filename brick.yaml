@@ -16,9 +16,9 @@ environment:
 #  * an optional prompt phrase used when asking for the variable
 #  * a list of values (enums only)
 #  * an optional separator (list only)
-# vars:
-#   appPath:
-#     type: string
-#     description: Specify the path to the app router.
-#     prompt: What is the path to your app?
-#     default: src/app
+vars:
+  applicationName:
+    type: string
+    description: The Application Name
+    default: frontend
+    prompt: What is the name of this Next.js application?
